@@ -1,0 +1,10 @@
+Starting a Gradle Daemon (subsequent builds will be faster)
+:compileJava UP-TO-DATE
+:processResources NO-SOURCE
+:classes UP-TO-DATE
+:run
+Quantidade de desafios esperados: 14. Encontrados: 14.
+Desafio pronto para ser enviado. Nenhum erro encontrado.
+
+BUILD SUCCESSFUL in 17s
+2 actionable tasks: 1 executed, 1 up-to-date
