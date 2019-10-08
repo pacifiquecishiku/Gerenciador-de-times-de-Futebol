@@ -34,7 +34,7 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
 	@Desafio("incluirJogador")
 	public void incluirJogador(Long id, Long idTime, String nome, LocalDate dataNascimento, Integer nivelHabilidade,
 			BigDecimal salario) throws IdentificadorUtilizadoException, TimeNaoEncontradoException {
-		if (idJogadores.contains(id)) {
+	/*	if (idJogadores.contains(id)) {
 			throw (new IdentificadorUtilizadoException());
 		} else if (!idTimes.contains(idTime)) {
 			throw (new TimeNaoEncontradoException());
@@ -42,12 +42,12 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
 			Jogador jogador = new Jogador(id, idTime, nome, dataNascimento, nivelHabilidade, salario);
 			listaJogadores.add(jogador);
 			idJogadores.add(id);
-		}
+		}*/
 	}
 
 	@Desafio("definirCapitao")
 	public void definirCapitao(Long idJogador) throws JogadorNaoEncontradoException {
-		if (!idJogadores.contains(idJogador)) {
+	/*	if (!idJogadores.contains(idJogador)) {
 			throw (new JogadorNaoEncontradoException());
 		} else {
 			for (Jogador jogador : listaJogadores) {
@@ -57,13 +57,13 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
 					jogador.setCapitao(false);
 				}
 			}
-		}
+		}*/
 	}
 
 	@Desafio("buscarCapitaoDoTime")
 	public Long buscarCapitaoDoTime(Long idTime) throws TimeNaoEncontradoException, CapitaoNaoInformadoException {
 		Long idCapitao = null;
-		if (!idTimes.contains(idTime)) {
+		/*if (!idTimes.contains(idTime)) {
 			throw (new TimeNaoEncontradoException());
 		} else {
 			for (Time time : listaTimes) {
@@ -78,14 +78,14 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
 		}
 		if (idCapitao == null) {
 			throw (new CapitaoNaoInformadoException());
-		}
+		}*/
 		return idCapitao;
 	}
 
 	@Desafio("buscarNomeJogador")
 	public String buscarNomeJogador(Long idJogador) throws JogadorNaoEncontradoException {
 		String nomeJogador = null;
-		if (!idJogadores.contains(idJogador)) {
+		/*if (!idJogadores.contains(idJogador)) {
 			throw (new JogadorNaoEncontradoException());
 		} else {
 			for (Jogador jogador : listaJogadores) {
@@ -93,14 +93,14 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
 					nomeJogador = jogador.getNome();
 				}
 			}
-		}
+		}*/
 		return nomeJogador;
 	}
 
 	@Desafio("buscarNomeTime")
 	public String buscarNomeTime(Long idTime) throws TimeNaoEncontradoException {
 		String nomeTime = null;
-		if (!idTimes.contains(idTime)) {
+		/*if (!idTimes.contains(idTime)) {
 			throw (new TimeNaoEncontradoException());
 		} else {
 			for (Time time : listaTimes) {
@@ -108,14 +108,14 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
 					nomeTime = time.getNome();
 				}
 			}
-		}
+		}*/
 		return nomeTime;
 	}
 
 	@Desafio("buscarJogadoresDoTime")
 	public List<Long> buscarJogadoresDoTime(Long idTime) throws TimeNaoEncontradoException {
 		List<Long> idJogadoresTime = new ArrayList<>();
-		if (!idTimes.contains(idTime)) {
+		/*if (!idTimes.contains(idTime)) {
 			throw new TimeNaoEncontradoException();
 		} else {
 			for (Time time : listaTimes) {
@@ -126,7 +126,7 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
 				}
 			}
 		}
-		Collections.sort(idJogadoresTime);
+		Collections.sort(idJogadoresTime);*/
 		return idJogadoresTime;
 	}
 
