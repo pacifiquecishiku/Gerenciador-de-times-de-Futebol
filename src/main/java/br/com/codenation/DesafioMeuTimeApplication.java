@@ -147,10 +147,6 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
 						if (jogador.getNivelHabilidade() > habilidade) {
 							habilidade = jogador.getNivelHabilidade();
 							idMelhorJogador = jogador.getId();
-						} else if (jogador.getNivelHabilidade() == habilidade) {
-							if(jogador.getId()<idMelhorJogador){
-								idMelhorJogador = jogador.getId();
-							}
 						}
 					}
 				}
