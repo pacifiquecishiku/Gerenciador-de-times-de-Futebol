@@ -42,6 +42,12 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
 			Jogador jogador = new Jogador(id, idTime, nome, dataNascimento, nivelHabilidade, salario);
 			listaJogadores.add(jogador);
 			idJogadores.add(id);
+			for(Time time: listaTimes){
+				if(time.getId()==idTime){
+					int index=listaTimes.indexOf(time);
+					listaTimes.get(index).getJogadores().add(jogador);
+				}
+			}
 		}
 	}
 
@@ -63,7 +69,7 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
 		}
 	}
 
-	@Desafio("buscarCapitaoDoTime") //FALHOU
+	@Desafio("buscarCapitaoDoTime")
 	public Long buscarCapitaoDoTime(Long idTime) {
 		Long idCapitao = null;
 		if (!idTimes.contains(idTime)) {
@@ -116,7 +122,7 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
 		return nomeTime;
 	}
 
-	@Desafio("buscarJogadoresDoTime") //FALHOU
+	@Desafio("buscarJogadoresDoTime")
 	public List<Long> buscarJogadoresDoTime(Long idTime) {
 		List<Long> idJogadoresTime = new ArrayList<>();
 		if (!idTimes.contains(idTime)) {
@@ -134,7 +140,7 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
 		return idJogadoresTime;
 	}
 
-	@Desafio("buscarMelhorJogadorDoTime")//FALHOU
+	@Desafio("buscarMelhorJogadorDoTime")
 	public Long buscarMelhorJogadorDoTime(Long idTime) {
 		Long idMelhorJogador = null;
 		int habilidade = 0;
@@ -158,32 +164,107 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
 
 	@Desafio("buscarJogadorMaisVelho")
 	public Long buscarJogadorMaisVelho(Long idTime) {
-		throw new UnsupportedOperationException();
-	}
+        Long idJogadorMaisVelho = null;
+        LocalDate dataNascimento = LocalDate.now();
+        if (!idTimes.contains(idTime)) {
+            throw (new TimeNaoEncontradoException());
+        } else {
+            for (Time time : listaTimes) {
+                if (time.getId() == idTime) {
+                    int qtdJogadores = time.getJogadores().size();
+                    for (int i=0;i<qtdJogadores;i++) {
+                        if(dataNascimento.isAfter(time.getJogadores().get(i).getDataNascimento())){
+                            dataNascimento=time.getJogadores().get(i).getDataNascimento();
+                            idJogadorMaisVelho=time.getJogadores().get(i).getId();
+                        }
+                    }
+                }
+            }
+        }
+        return idJogadorMaisVelho;
+    }
 
 	@Desafio("buscarTimes")
 	public List<Long> buscarTimes() {
-		throw new UnsupportedOperationException();
+		Collections.sort(idTimes);
+
+		return idTimes;
 	}
 
-	@Desafio("buscarJogadorMaiorSalario")
+	@Desafio("buscarJogadorMaiorSalario")//FALHOU
 	public Long buscarJogadorMaiorSalario(Long idTime) {
-		throw new UnsupportedOperationException();
+		BigDecimal salarioJogador = new BigDecimal(0);
+		Long idJogadorMaiorSalario = null;
+		if (!idTimes.contains(idTime)) {
+			throw new TimeNaoEncontradoException();
+		} else {
+			for (Time time : listaTimes) {
+				if (time.getId() == idTime) {
+					for (Jogador jogador : time.getJogadores()) {
+						if (salarioJogador.byteValue() < jogador.getSalario().byteValue()) {
+							salarioJogador = jogador.getSalario();
+							idJogadorMaiorSalario = jogador.getId();
+						}else if(salarioJogador.byteValue() == jogador.getSalario().byteValue()){
+							if(idJogadorMaiorSalario>jogador.getId()){
+								salarioJogador = jogador.getSalario();
+								idJogadorMaiorSalario = jogador.getId();
+							}
+						}
+					}
+				}
+			}
+
+		}
+		return idJogadorMaiorSalario;
 	}
 
 	@Desafio("buscarSalarioDoJogador")
 	public BigDecimal buscarSalarioDoJogador(Long idJogador) {
-		throw new UnsupportedOperationException();
+		BigDecimal salario = new BigDecimal(0);
+		if (!idJogadores.contains(idJogador)) {
+			throw new JogadorNaoEncontradoException();
+		} else {
+			for (Jogador jogador : listaJogadores) {
+				if (jogador.getId() == idJogador) {
+					salario = jogador.getSalario();
+				}
+			}
+		}
+		return salario;
 	}
 
-	@Desafio("buscarTopJogadores")
+	@Desafio("buscarTopJogadores") //CONTINUAR
 	public List<Long> buscarTopJogadores(Integer top) {
-		throw new UnsupportedOperationException();
+		List<Long> topJogadores = new ArrayList<>();
+		List<Integer> niveis = new ArrayList<>();
+		for(Jogador jogador: listaJogadores){
+			niveis.add(jogador.getNivelHabilidade());
+			topJogadores.add(jogador.getId());
+		}
+
+		return topJogadores;
 	}
 
-	@Desafio("buscarCorCamisaTimeDeFora")
+	@Desafio("buscarCorCamisaTimeDeFora")//FALHOU
 	public String buscarCorCamisaTimeDeFora(Long timeDaCasa, Long timeDeFora) {
-		throw new UnsupportedOperationException();
+		String corCamisa = "";
+		if (!idTimes.contains(timeDaCasa) || !listaTimes.contains(timeDeFora)) {
+			throw (new TimeNaoEncontradoException());
+		}else {
+			for (Time timeCasa : listaTimes) {
+				if (timeCasa.getId() == timeDaCasa) {
+					for (Time timeFora : listaTimes) {
+						if (timeFora.getId() == timeDeFora) {
+							if (timeCasa.getCorUniformePrincipal().equals(timeFora.getCorUniformePrincipal())) {
+								corCamisa = timeFora.getCorUniformeSecundario();
+							} else {
+								corCamisa = timeFora.getCorUniformePrincipal();
+							}
+						}
+					}
+				}
+			}
+		}
+		return corCamisa;
 	}
-
 }
