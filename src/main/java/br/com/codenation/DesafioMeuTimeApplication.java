@@ -236,13 +236,35 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
 	@Desafio("buscarTopJogadores") //CONTINUAR
 	public List<Long> buscarTopJogadores(Integer top) {
 		List<Long> topJogadores = new ArrayList<>();
-		List<Integer> niveis = new ArrayList<>();
-		for(Jogador jogador: listaJogadores){
-			niveis.add(jogador.getNivelHabilidade());
-			topJogadores.add(jogador.getId());
-		}
+        List<Long> topJogadoresFinal = new ArrayList<>();
+		List<Integer> nivelJogadores = new ArrayList<>();
+		if(listaJogadores.isEmpty()){
+			return new ArrayList<>();
+		}else {
+			for (Jogador jogador : listaJogadores) {
+				topJogadores.add(jogador.getId());
+				nivelJogadores.add(jogador.getNivelHabilidade());
+			}
+			for (int i = topJogadores.size(); i >= 0; i--) {
+				for (int j = 0; j < i; j++) {
+					int maior = nivelJogadores.get(j);
+					int menor = nivelJogadores.get(j + 1);
+					if (menor > maior) {
+						nivelJogadores.set(j, menor);
+						nivelJogadores.set(j + 1, maior);
 
-		return topJogadores;
+						Long idMaior = topJogadores.get(j);
+						Long idMenor = topJogadores.get(j + 1);
+						topJogadores.set(j, idMenor);
+						topJogadores.set(j + 1, idMaior);
+					}
+				}
+			}
+			for (int i = 0; i < top; i++) {
+				topJogadoresFinal.add(topJogadores.get(i));
+			}
+		}
+		return topJogadoresFinal;
 	}
 
 	@Desafio("buscarCorCamisaTimeDeFora")//FALHOU
