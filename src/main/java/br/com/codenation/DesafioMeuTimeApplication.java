@@ -1,17 +1,17 @@
 package br.com.codenation;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import br.com.codenation.desafio.annotation.Desafio;
 import br.com.codenation.desafio.app.MeuTimeInterface;
 import br.com.codenation.desafio.exceptions.CapitaoNaoInformadoException;
 import br.com.codenation.desafio.exceptions.IdentificadorUtilizadoException;
 import br.com.codenation.desafio.exceptions.JogadorNaoEncontradoException;
 import br.com.codenation.desafio.exceptions.TimeNaoEncontradoException;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class DesafioMeuTimeApplication implements MeuTimeInterface {
 	private List<Time> listaTimes = new ArrayList<>();
@@ -191,7 +191,7 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
 		return idTimes;
 	}
 
-	@Desafio("buscarJogadorMaiorSalario")//FALHOU
+	@Desafio("buscarJogadorMaiorSalario")
 	public Long buscarJogadorMaiorSalario(Long idTime) {
 		BigDecimal salarioJogador = new BigDecimal(0);
 		Long idJogadorMaiorSalario = null;
@@ -201,10 +201,10 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
 			for (Time time : listaTimes) {
 				if (time.getId() == idTime) {
 					for (Jogador jogador : time.getJogadores()) {
-						if (salarioJogador.byteValue() < jogador.getSalario().byteValue()) {
+						if (salarioJogador.compareTo(jogador.getSalario()) < 0) { //Método para comparar BigDeccimais
 							salarioJogador = jogador.getSalario();
 							idJogadorMaiorSalario = jogador.getId();
-						}else if(salarioJogador.byteValue() == jogador.getSalario().byteValue()){
+						}else if(salarioJogador.compareTo(jogador.getSalario()) == 0){
 							if(idJogadorMaiorSalario>jogador.getId()){
 								salarioJogador = jogador.getSalario();
 								idJogadorMaiorSalario = jogador.getId();
@@ -233,7 +233,7 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
 		return salario;
 	}
 
-	@Desafio("buscarTopJogadores") //CONTINUAR
+	@Desafio("buscarTopJogadores")
 	public List<Long> buscarTopJogadores(Integer top) {
 		List<Long> topJogadores = new ArrayList<>();
         List<Long> topJogadoresFinal = new ArrayList<>();
@@ -245,7 +245,7 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
 				topJogadores.add(jogador.getId());
 				nivelJogadores.add(jogador.getNivelHabilidade());
 			}
-			for (int i = topJogadores.size(); i >= 0; i--) {
+			for (int i = topJogadores.size()-1; i >= 0; i--) {
 				for (int j = 0; j < i; j++) {
 					int maior = nivelJogadores.get(j);
 					int menor = nivelJogadores.get(j + 1);
@@ -270,23 +270,24 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
 	@Desafio("buscarCorCamisaTimeDeFora")//FALHOU
 	public String buscarCorCamisaTimeDeFora(Long timeDaCasa, Long timeDeFora) {
 		String corCamisa = "";
+		Time time_Casa = null;
+		Time time_Fora = null;
 		if (!idTimes.contains(timeDaCasa) || !listaTimes.contains(timeDeFora)) {
 			throw (new TimeNaoEncontradoException());
-		}else {
+		} else {
 			for (Time timeCasa : listaTimes) {
 				if (timeCasa.getId() == timeDaCasa) {
-					for (Time timeFora : listaTimes) {
-						if (timeFora.getId() == timeDeFora) {
-							if (timeCasa.getCorUniformePrincipal().equals(timeFora.getCorUniformePrincipal())) {
-								corCamisa = timeFora.getCorUniformeSecundario();
-							} else {
-								corCamisa = timeFora.getCorUniformePrincipal();
-							}
-						}
-					}
+					time_Casa = timeCasa;
+					break;
+				}
+			}
+			for (Time timeFora : listaTimes) {
+				if (timeFora.getId() == timeDeFora) {
+					time_Fora = timeFora;
 				}
 			}
 		}
-		return corCamisa;
+		return time_Casa.getCorUniformePrincipal().equals(time_Fora.getCorUniformePrincipal()) ? time_Fora.getCorUniformeSecundario() : time_Fora.getCorUniformePrincipal();
 	}
 }
+
