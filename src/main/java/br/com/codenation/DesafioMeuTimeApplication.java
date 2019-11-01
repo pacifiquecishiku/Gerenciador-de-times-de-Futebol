@@ -267,12 +267,12 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
 		return topJogadoresFinal;
 	}
 
-	@Desafio("buscarCorCamisaTimeDeFora")//FALHOU
+	@Desafio("buscarCorCamisaTimeDeFora")
 	public String buscarCorCamisaTimeDeFora(Long timeDaCasa, Long timeDeFora) {
 		String corCamisa = "";
 		Time time_Casa = null;
 		Time time_Fora = null;
-		if (!idTimes.contains(timeDaCasa) || !listaTimes.contains(timeDeFora)) {
+		if (!idTimes.contains(timeDaCasa) || !idTimes.contains(timeDeFora)) {
 			throw (new TimeNaoEncontradoException());
 		} else {
 			for (Time timeCasa : listaTimes) {
